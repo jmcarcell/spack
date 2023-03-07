@@ -210,6 +210,7 @@ class Petsc(Package, CudaPackage, ROCmPackage):
     depends_on("python@2.6:2.8,3.4:3.8", when="@:3.13", type="build")
     depends_on("python@2.6:2.8,3.4:", when="@3.14:3.17", type="build")
     depends_on("python@3.4:", when="@3.18:", type="build")
+    depends_on("gmake@3.81:4.4.0", when="@:3.18.5", type="build")
 
     # Other dependencies
     depends_on("metis@5:~int64+real64", when="@:3.7+metis~int64+double")
