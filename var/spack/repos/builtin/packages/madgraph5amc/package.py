@@ -108,6 +108,9 @@ class Madgraph5amc(MakefilePackage):
 
             compile_py()
 
+    def build(self, spec, prefix):
+        pass
+
     def install(self, spec, prefix):
         def installdir(dirname):
             install_tree(dirname, join_path(prefix, dirname))
