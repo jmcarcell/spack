@@ -162,6 +162,8 @@ class IntelTbb(CMakePackage, MakefilePackage):
     # @2018.3, @2018.6, 2019, @2019.[1-9], and @2020.[0-3]
     patch("intel-tbb.nvhpc-version-script-fix.2017.patch", when="@2017 %nvhpc")
 
+    patch("binutils.patch", when="@2021.9.0")
+
     # Version and tar file names:
     #  2020.0 --> v2020.0.tar.gz  starting with 2020
     #  2017.1 --> 2017_U1.tar.gz  starting with 2017
