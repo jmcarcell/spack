@@ -23,6 +23,15 @@ class Xgboost(CMakePackage, CudaPackage):
 
     version("master", branch="master", submodules=True)
     version(
+        "2.0.2", tag="v2.0.2", commit="41ce8f28b269dbb7efc70e3a120af3c0bb85efe3", submodules=True
+    )
+    version(
+        "2.0.0", tag="v2.0.0", commit="096047c547aa71af7d53a507cecdd2a1d3124651", submodules=True
+    )
+    version(
+        "1.7.6", tag="v1.7.6", commit="36eb41c960483c8b52b44082663c99e6a0de440a", submodules=True
+    )
+    version(
         "1.6.2", tag="v1.6.2", commit="b9934246faa9a25e10a12339685dfbe56d56f70b", submodules=True
     )
     version(
