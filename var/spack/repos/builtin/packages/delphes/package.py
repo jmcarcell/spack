@@ -48,7 +48,7 @@ class Delphes(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17"),
+        values=("14", "17", "20"),
         multi=False,
         description="Use the specified C++ standard when building.",
     )
@@ -56,6 +56,7 @@ class Delphes(CMakePackage):
     depends_on("cmake", type="build")
     depends_on("root cxxstd=14", when="cxxstd=14")
     depends_on("root cxxstd=17", when="cxxstd=17")
+    depends_on("root cxxstd=20", when="cxxstd=20")
     depends_on("pythia8", when="+pythia8")
 
     def cmake_args(self):
