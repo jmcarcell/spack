@@ -57,12 +57,21 @@ class Whizard(AutotoolsPackage):
     variant("openloops", default=False, description="builds with openloops")
     variant("latex", default=False, description="data visualization with latex")
 
+    # Patch to fix the build with pythia8 8.310 before 3.1.4
+    patch(
+        "https://gitlab.tp.nt.uni-siegen.de/whizard/public/-/commit/8794c645fdb99f4552e07242223e78fea3cfee05.diff",
+        sha256="35c394ace235a6b97e40aa24c9fdcb7fbf31ef84374b519d01bf99b8e952234b",
+        when="@3:3.1.3 ^pythia8@8.310:",
+    )
+
     depends_on("libtirpc", type=("build", "link", "run"))
     depends_on("ocaml@4.02.3:", type="build", when="@3:")
     depends_on("ocaml@4.02.3:~force-safe-string", type="build", when="@:2")
     depends_on("hepmc", when="hepmc=2")
     depends_on("hepmc3", when="hepmc=3")
     depends_on("lcio", when="+lcio")
+    depends_on("pythia8@8.309:", when="@:3.1.3 +pythia8")
+    depends_on("pythia8@8.300:", when="@:2.8.4 +pythia8")
     depends_on("pythia8", when="+pythia8")
     depends_on("lhapdf", when="+lhapdf")
     depends_on("fastjet", when="+fastjet")
@@ -99,6 +108,9 @@ class Whizard(AutotoolsPackage):
         "%intel@:17",
         msg="The fortran compiler needs to support Fortran 2008. For more detailed information see https://whizard.hepforge.org/compilers.html",
     )
+
+    # Pythia8 8.301-8.302 have a bug in their LHA interface
+    conflicts("pythia8@8.301:8.302")
 
     def setup_build_environment(self, env):
         # whizard uses some environment variables to detect dependencies at
