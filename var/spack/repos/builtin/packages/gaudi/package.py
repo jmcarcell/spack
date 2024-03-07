@@ -62,6 +62,7 @@ class Gaudi(CMakePackage):
         sha256="b05f6b7c1efb8c3af291c8d81fd1627e58af7c5f9a78a0098c6e3bfd7ec80c15",
         when="@37.1 ^catch2@3.1:",
     )
+    patch("gcc11_cpp20.patch", when="@36.5:38.0 %gcc@11")
 
     # These dependencies are needed for a minimal Gaudi build
     depends_on("aida")
