@@ -172,8 +172,18 @@ class Texlive(AutotoolsPackage):
             mktexlsr = Executable(join_path(self.prefix.bin, self.tex_arch(), "mktexlsr"))
             mtxrun = Executable(join_path(self.prefix.bin, self.tex_arch(), "mtxrun"))
             mktexlsr()
-            fmtutil_sys("--all")
-            mtxrun("--generate")
+            try:
+                os.rename("/usr/lib/x86_64-linux-gnu/libz.so.1", "/usr/lib/x86_64-linux-gnu/libz_spack_texlive.so.1")
+                os.rename("/usr/lib/x86_64-linux-gnu/libz.so.1.2.11", "/usr/lib/x86_64-linux-gnu/libz_spack_texlive.so.1.2.11")
+                fmtutil_sys("--all")
+                mtxrun("--generate")
+            except Exception as e:
+                os.rename("/usr/lib/x86_64-linux-gnu/libz_spack_texlive.so.1", "/usr/lib/x86_64-linux-gnu/libz.so.1")
+                os.rename("/usr/lib/x86_64-linux-gnu/libz_spack_texlive.so.1.2.11", "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11")
+                raise e
+            else:
+                os.rename("/usr/lib/x86_64-linux-gnu/libz_spack_texlive.so.1", "/usr/lib/x86_64-linux-gnu/libz.so.1")
+                os.rename("/usr/lib/x86_64-linux-gnu/libz_spack_texlive.so.1.2.11", "/usr/lib/x86_64-linux-gnu/libz.so.1.2.11")
 
         else:
             pass
