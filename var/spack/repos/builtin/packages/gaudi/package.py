@@ -64,6 +64,13 @@ class Gaudi(CMakePackage):
         sha256="b05f6b7c1efb8c3af291c8d81fd1627e58af7c5f9a78a0098c6e3bfd7ec80c15",
         when="@37.1 ^catch2@3.1:",
     )
+    # add std::list for v38
+    patch(
+        "https://gitlab.cern.ch/gaudi/Gaudi/-/merge_requests/1584.diff",
+        sha256="e36b8923fde2ba0c6408c93830dae19552b9849eee4775c9db9ade80ea876005",
+        when="@:38.2",
+    )
+
 
     # These dependencies are needed for a minimal Gaudi build
     depends_on("aida")
