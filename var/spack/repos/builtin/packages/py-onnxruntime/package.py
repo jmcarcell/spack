@@ -81,6 +81,9 @@ class PyOnnxruntime(CMakePackage, PythonExtension):
         when="@1.10:1.15",
     )
 
+    # Install the files in include/core/session
+    patch("install-session.patch", level=1, when="@1.17.1:")
+
     dynamic_cpu_arch_values = ("NOAVX", "AVX", "AVX2", "AVX512")
 
     variant(

@@ -1,0 +1,10 @@
+diff --git a/cmake/onnxruntime_common.cmake b/cmake/onnxruntime_common.cmake
+index 896379d..1f26264 100644
+--- a/cmake/onnxruntime_common.cmake
++++ b/cmake/onnxruntime_common.cmake
+@@ -224,3 +224,5 @@ if (NOT onnxruntime_BUILD_SHARED_LIB)
+             RUNTIME   DESTINATION ${CMAKE_INSTALL_BINDIR}
+             FRAMEWORK DESTINATION ${CMAKE_INSTALL_BINDIR})
+ endif()
++
++install(DIRECTORY ${PROJECT_SOURCE_DIR}/../include/onnxruntime/core/session  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/onnxruntime/core/)
