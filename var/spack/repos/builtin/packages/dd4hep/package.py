@@ -59,6 +59,13 @@ class Dd4hep(CMakePackage):
         when="@1.19:1.23",
         sha256="6466719c82de830ce728db57004fb7db03983587a63b804f6dc95c6b92b3fc76",
     )
+    # Do not use CMAKE_INSTALL_LIBDIR, sometimes set to lib64
+    # which is not included in LD_LIBRARY_PATH
+    patch(
+        "https://patch-diff.githubusercontent.com/raw/AIDASoft/DD4hep/pull/1316.patch?full_index=1",
+        sha256="202284b7735f5bea46e5e8e76c79a4347bc401dcdac75513a03c50d06e75e5ea",
+    )
+
 
     # variants for subpackages
     variant("ddcad", default=True, description="Enable CAD interface based on Assimp")
