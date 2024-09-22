@@ -70,3 +70,9 @@ class PyOnnx(PythonPackage):
 
     # 'python_out' does not recognize dllexport_decl.
     patch("remove_dllexport_decl.patch", when="@:1.6.0")
+
+    patch(
+        "https://github.com/onnx/onnx/commit/1f6e43cb4d7366b2dffa7f70ae88198306e12c6c.patch?full_index=1",
+        sha256="be12f589bc4113982e4162efcdbd95835a6c161a9a7e10cd1dde026cadedf8aa",
+        when="@1.15.0 %gcc@14",
+    )
