@@ -403,6 +403,7 @@ class CMakeBuilder(BuilderWithDefaults):
             ),
             define("CMAKE_PREFIX_PATH", get_cmake_prefix_path(pkg)),
             define("CMAKE_BUILD_TYPE", build_type),
+            define("CMAKE_INSTALL_LIBDIR", 'lib'),
         ]
 
         if primary_generator == "Unix Makefiles":
