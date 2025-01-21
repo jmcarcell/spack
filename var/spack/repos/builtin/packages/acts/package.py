@@ -345,6 +345,12 @@ class Acts(CMakePackage, CudaPackage):
     )
     variant("analysis", default=False, description="Build analysis applications in the examples")
 
+    patch(
+        "https://github.com/acts-project/acts/pull/4042.patch?full_index=1",
+        sha256="7f9d8f976ebe94cb10148c1b6c47f13729b2a2a0b1adac2dad599fa71a245695",
+        when="@38",
+    )
+
     # Build dependencies
     depends_on("acts-dd4hep", when="@19 +dd4hep")
     with when("+svg"):
