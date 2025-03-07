@@ -61,6 +61,10 @@ class Dd4hep(CMakePackage):
         when="@1.19:1.23",
         sha256="6466719c82de830ce728db57004fb7db03983587a63b804f6dc95c6b92b3fc76",
     )
+    patch(
+        "https://patch-diff.githubusercontent.com/raw/AIDASoft/DD4hep/pull/1414.patch?full_index=1",
+        sha256="c182b5e33df81778d6342e62af8d1b1b04af414f963e886ae5fd90e13ba75567",
+    )
 
     # variants for subpackages
     variant("ddcad", default=True, description="Enable CAD interface based on Assimp")
