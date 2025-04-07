@@ -231,6 +231,9 @@ class Geant4(CMakePackage):
     # Fix navigation errors with twisted tubes: https://bugzilla-geant4.kek.jp/show_bug.cgi?id=2619
     patch("twisted-tubes.patch", when="@11.2.0:11.2.2")
 
+    # Patch for G4Decay
+    patch("geant4-11.3.1-g4decay.patch", when="@11.3.0:11.3.1")
+
     # NVHPC: "thread-local declaration follows non-thread-local declaration"
     conflicts("%nvhpc", when="+threads")
 

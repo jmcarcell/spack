@@ -1,0 +1,65 @@
+From f6c057a353d7917624a3dd7894bd942de0537413 Mon Sep 17 00:00:00 2001
+From: Alvaro Tolosa Delgado <alvaro.tolosa.delgado@cern.ch>
+Date: Thu, 3 Apr 2025 18:43:59 +0200
+Subject: [PATCH] Remove approximation in calculation of G4Decay path length,
+ fix issue #2645
+
+---
+ source/processes/decay/History            | 3 +++
+ source/processes/decay/include/G4Decay.hh | 2 --
+ source/processes/decay/src/G4Decay.cc     | 6 +-----
+ 3 files changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/source/processes/decay/History b/source/processes/decay/History
+index ce7ddca3c52..f8de04d26db 100644
+--- a/source/processes/decay/History
++++ b/source/processes/decay/History
+@@ -5,6 +5,9 @@ which **must** added in reverse chronological order (newest at the top). It must
+ be used as a substitute for writing good git commit messages!
+ 
+ 
++## 2025-04-03 Alvaro Tolosa-Delgado (decay-V11-03-00)
++- Remove approximation in calculation of G4Decay path length, fix issue #2645
++
+ ## 2021-12-10 Ben Morgan (decay-V11-00-00)
+ - Change to new Markdown History format
+ 
+diff --git a/source/processes/decay/include/G4Decay.hh b/source/processes/decay/include/G4Decay.hh
+index 71b8ef701e7..7db64302422 100644
+--- a/source/processes/decay/include/G4Decay.hh
++++ b/source/processes/decay/include/G4Decay.hh
+@@ -166,8 +166,6 @@ class G4Decay : public G4VRestDiscreteProcess
+      //  2: More
+ 
+   protected:
+-    // HighestValue.
+-    const G4double HighestValue;
+  
+     // Remainder of life time at rest
+     G4double                 fRemainderLifeTime;
+diff --git a/source/processes/decay/src/G4Decay.cc b/source/processes/decay/src/G4Decay.cc
+index 62c0d3167ca..e78938483c4 100644
+--- a/source/processes/decay/src/G4Decay.cc
++++ b/source/processes/decay/src/G4Decay.cc
+@@ -62,7 +62,6 @@
+ G4Decay::G4Decay(const G4String& processName)
+                                :G4VRestDiscreteProcess(processName, fDecay),
+ 				verboseLevel(1),
+-                                HighestValue(20.0),
+ 				fRemainderLifeTime(-1.0),
+                                 pExtDecayer(nullptr)
+ {
+@@ -151,10 +150,7 @@ G4double G4Decay::GetMeanFreePath(const G4Track& aTrack,G4double, G4ForceConditi
+     //calculate the mean free path 
+     // by using normalized kinetic energy (= Ekin/mass)
+      G4double   rKineticEnergy = aParticle->GetKineticEnergy()/aMass; 
+-     if ( rKineticEnergy > HighestValue) {
+-       // gamma >>  1
+-       pathlength = ( rKineticEnergy + 1.0)* aCtau;
+-     } else if ( rKineticEnergy < DBL_MIN ) {
++     if ( rKineticEnergy < DBL_MIN ) {
+        // too slow particle
+ #ifdef G4VERBOSE
+        if (GetVerboseLevel()>1) {
+-- 
+GitLab
