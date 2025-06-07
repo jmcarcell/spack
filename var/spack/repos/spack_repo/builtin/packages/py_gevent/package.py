@@ -25,6 +25,7 @@ class PyGevent(PythonPackage):
     version("1.5.0", sha256="b2814258e3b3fb32786bb73af271ad31f51e1ac01f33b37426b66cb8491b4c29")
 
     depends_on("c", type="build")  # generated
+    depends_on("gmake", type="build")
 
     depends_on("python@3.9:", when="@24.10.1:", type=("build", "run"))
     depends_on("python@3.8:", when="@23.7.0:", type=("build", "run"))
