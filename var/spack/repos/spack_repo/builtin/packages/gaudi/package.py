@@ -97,6 +97,9 @@ class Gaudi(CMakePackage, CudaPackage):
     )
     conflicts("^root@6.36:", when="@:38.0")
 
+    # Fix issue with sqlite3 and python 3.13
+    patch("db.patch", when="^python@3.13")
+
     # These dependencies are needed for a minimal Gaudi build
     depends_on("cxx", type="build")
     depends_on("aida")

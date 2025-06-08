@@ -1,0 +1,27 @@
+diff --git a/GaudiKernel/scripts/merge_confdb2_parts b/GaudiKernel/scripts/merge_confdb2_parts
+index 7bb1d0444..3bc28e6c0 100755
+--- a/GaudiKernel/scripts/merge_confdb2_parts
++++ b/GaudiKernel/scripts/merge_confdb2_parts
+@@ -14,6 +14,7 @@ import os
+ import shelve
+ import sys
+ from optparse import OptionParser
++import dbm.gnu as shelve
+ 
+ from GaudiKernel.DataHandle import DataHandle  # noqa: F401
+ from GaudiKernel.GaudiHandles import *  # noqa: F401 F403
+@@ -62,10 +63,12 @@ if __name__ == "__main__":
+             os.remove(output)
+         if sys.platform.startswith("darwin") and os.path.exists(output + ".db"):
+             os.remove(output + ".db")
+-        out = shelve.open(output)
++        out = shelve.open(output, 'c')
+         for input in inputs:
+             logging.debug("adding %r", input)
+-            out.update(eval(open(input, "rb").read()))
++            d = eval(open(input, "rb").read())
++            for key, value in d.items():
++                out[str(key)] = str(value)
+         out.close()
+         if sys.platform.startswith("darwin"):
+             if os.path.exists(output):  # this Python uses dbm.gnu
