@@ -202,6 +202,7 @@ class Dd4hep(CMakePackage):
             self.define("BUILD_TESTING", self.run_tests),
             self.define("BOOST_ROOT", spec["boost"].prefix),
             self.define("Boost_NO_BOOST_CMAKE", True),
+            self.define("CMAKE_INSTALL_LIBDIR", "lib"),
         ]
 
         packages = [
