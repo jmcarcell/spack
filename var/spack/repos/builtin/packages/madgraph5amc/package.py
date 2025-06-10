@@ -24,6 +24,7 @@ class Madgraph5amc(MakefilePackage):
     timeout = {"timeout": 60}
 
     with default_args(fetch_options=timeout):
+        version("3.6.2", sha256="1dde78f865278d8b9a59ca608076f495ad82cebe75f10469faba97210ddcdb6f")
         version("3.5.6", sha256="d4f336196303df748074ac92f251db8e6592fca37b3059c2e0f2a764c7e50975")
         version(
             "2.9.20",
@@ -49,6 +50,9 @@ class Madgraph5amc(MakefilePackage):
                 url="https://launchpad.net/mg5amcnlo/lts/2.7.x/+download/MG5_aMC_v2.7.3.py3.tar.gz",
             )
 
+    depends_on("cxx", type="build", when="+pythia8")
+    depends_on("fortran", type="build")
+
     variant(
         "atlas",
         default=False,
@@ -57,6 +61,43 @@ class Madgraph5amc(MakefilePackage):
     variant("ninja", default=False, description="Use external installation" + " of Ninja")
     variant("collier", default=False, description="Use external installation" + " of Collier")
     variant("pythia8", default=False, description="Use external installation of Pythia8")
+    variant(
+        "models",
+        values=(
+            "None",
+            "2HDM",
+            "4Gen",
+            "DY_SM",
+            "EWdim6",
+            "IDM_NLO_EW_CM_UFO",
+            "RS",
+            "SMScalars",
+            "TopEffTh",
+            "heft",
+            "heft_v4",
+            "loop_qcd_qed_sm",
+            "loop_qcd_qed_sm_4FS",
+            "loop_qcd_qed_sm_Gmu",
+            "loop_qcd_qed_sm_Gmu_4FS",
+            "loop_qcd_qed_sm_Gmu_4FS_ew",
+            "loop_qcd_qed_sm_a0",
+            "loop_qcd_qed_sm_forSUSY",
+            "mssm_v4",
+            "nmssm",
+            "sextet_diquarks",
+            "sm_v4",
+            "top-philic_NLO_EW_CM_UFO",
+            "triplet_diquarks",
+            "usrmod_v4",
+            "uutt_sch_4fermion",
+            "uutt_tch_scalar",
+        ),
+        default=("None",),
+        multi=True,
+        description="Models that will be installed by Madgraph. These models can be used"
+        "without them being installed first, then madgraph will download them"
+        "when importing them. These models are taken from http://madgraph.phys.ucl.ac.be/Downloads/models",
+    )
 
     conflicts("%gcc@10:", when="@2.7.3")
 
@@ -143,6 +184,7 @@ class Madgraph5amc(MakefilePackage):
             join_path(prefix, "Template", "LO", "Source", "make_opts"),
         )
 
+        mg5 = Executable(join_path(prefix, "bin", "mg5_aMC"))
         # TODO: Fix for reproducibility, see https://github.com/spack/spack/pull/41128#issuecomment-2305777485
         if "+pythia8" in spec:
             with open("install-pythia8-interface", "w") as f:
@@ -151,8 +193,14 @@ class Madgraph5amc(MakefilePackage):
                         install mg5amc_py8_interface
                 """
                 )
-            mg5 = Executable(join_path(prefix, "bin", "mg5_aMC"))
             mg5("install-pythia8-interface")
+
+        if spec.variants["models"].value != ("None",):
+            with open("install-models", "w") as f:
+                f.write(
+                    "\n".join([f"import model {model}" for model in spec.variants["models"].value if model != "None"])
+                )
+            mg5("install-models")
 
     def url_for_version(self, version):
         major = str(version).split(".")[0]
